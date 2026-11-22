@@ -1,21 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// The Ministry preset is the first-run starting point for this deployment.
-// The existing Iteration 13 loader hydrates this encoded example and keeps its
-// Store / Account / Briefcase styling and racing experience intact.
-const MINISTRY_EXAMPLE = "eyJpZCI6Im1pbmlzdHJ5LWxhYm91ci1ob21lLWFmZmFpcnMtYnciLCJidXNpbmVzc05hbWUiOiJNaW5pc3RyeSBvZiBMYWJvdXIgYW5kIEhvbWUgQWZmYWlycyIsImN1cnJlbmN5IjoiQldQIiwiYnJhbmRDb2xvcnMiOlsiIzI0NThlOCIsIiMyMDJiM2MiXSwiZGF0YSI6eyJzZXJ2aWNlcyI6W3siaWQiOiJuYXRpb25hbC1pZGVudGl0eS1wYXNzcG9ydC1zZXJ2aWNlcyIsIm5hbWUiOiJOYXRpb25hbCBJZGVudGl0eSBDYXJkIChPbWFuZykgJiBQYXNzcG9ydCBTZXJ2aWNlcyIsImluZHVzdHJ5IjoiR292ZXJubWVudCBTZXJ2aWNlcyAvIENpdmlsIFJlZ2lzdHJhdGlvbiAmIEltbWlncmF0aW9uIiwicHJpY2UiOjEwMCwiZGVzY3JpcHRpb24iOiJDaXZpbCByZWdpc3RyYXRpb24sIG5hdGlvbmFsIGlkZW50aXR5IGNhcmRzIChPbWFuZyksIHBhc3Nwb3J0cywgYW5kIGJpcnRoL21hcnJpYWdlL2RlYXRoIHJlY29yZHMuIERlbW9uc3RyYXRpb24gY2F0YWxvZ3VlIHZhbHVlIG9ubHk7IHRoaXMgaXMgbm90IGFuIG9mZmljaWFsIGdvdmVybm1lbnQgZmVlLiIsIm1lZGlhIjoiIiwibWVkaWFUeXBlIjoiaW1hZ2UiLCJhY3RpdmUiOnRydWV9XSwiYXZhaWxhYmlsaXR5IjoibGltaXRlZCIsImFubm91bmNlbWVudCI6Ik9mZmljaWFsIHB1YmxpYyBzZXJ2aWNlcyBmb3IgQ2l2aWwgUmVnaXN0cmF0aW9uIChPbWFuZywgUGFzc3BvcnRzLCBCaXJ0aC9NYXJyaWFnZS9EZWF0aCBSZWNvcmRzKSwgSW1taWdyYXRpb24gJiBCb3JkZXIgQ29udHJvbCAoV29yayAmIFJlc2lkZW5jZSBQZXJtaXRzKSwgYW5kIExhYm91ciAmIEVtcGxveW1lbnQiLCJhbm5vdW5jZW1lbnRBY3RpdmUiOnRydWUsImFubm91bmNlbWVudEltYWdlIjoiIiwiZGlzY291bnRBbW91bnQiOjUsInJld2FyZFRpdGxlIjoiUmFjZSBmb3IgYSBkaXNjb3VudC4iLCJyZXdhcmREZXNjcmlwdGlvbiI6IkRyaXZlIGZvciBlaWdodCBzZWNvbmRzLiBLZWVwIGl0IGNsZWFuIHRvIHVubG9jayB0aGUgcHVibGlzaGVkIGRpc2NvdW50IG9uIHlvdXIgbmV4dCByZXF1ZXN0LiIsInJld2FyZEltYWdlIjoiIiwicmV3YXJkQWN0aXZlIjp0cnVlfX0";
-
+// Load the Ministry's versioned first-run catalogue without a huge URL payload.
 export function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname !== "/" || request.nextUrl.searchParams.has("example")) {
-    return NextResponse.next();
-  }
-
+  if (request.nextUrl.pathname !== "/" || request.nextUrl.searchParams.has("example") || request.nextUrl.searchParams.has("ministry")) return NextResponse.next();
   const url = request.nextUrl.clone();
-  url.searchParams.set("example", MINISTRY_EXAMPLE);
+  url.searchParams.set("ministry", "1");
   url.searchParams.set("sample", "1");
   return NextResponse.redirect(url);
 }
 
-export const config = {
-  matcher: ["/"],
-};
+export const config = { matcher: ["/"] };
