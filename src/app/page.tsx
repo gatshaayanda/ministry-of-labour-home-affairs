@@ -134,7 +134,7 @@ const getBusinessCurrency = () => {
   try { const value = window.localStorage.getItem(getStorageKey(CURRENCY_KEY)); return supportedCurrencies.includes(value as typeof supportedCurrencies[number]) ? value! : "USD"; }
   catch { return "USD"; }
 };
-const money = (amount: number) => new Intl.NumberFormat("en", { style: "currency", currency: getBusinessCurrency(), maximumFractionDigits: 2 }).format(amount);
+const money = (amount: number) => amount === 0 && getBusinessCurrency() === "BWP" ? "Not quoted" : new Intl.NumberFormat("en", { style: "currency", currency: getBusinessCurrency(), maximumFractionDigits: 2 }).format(amount);
 const formatLocalBytes = (bytes: number | null) => bytes === null ? "Unavailable" : bytes < 1024 ? `${bytes} B` : bytes < 1024 * 1024 ? `${(bytes / 1024).toFixed(1)} KB` : `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 const serviceEmoji = (name: string) => {
   const label = name.toLowerCase();
