@@ -9,6 +9,7 @@ import AccountWorkspace, { type AccountMessage } from "@/app/AccountWorkspace";
 import RacingWarmup from "@/app/games/racing-warmup";
 import ReceiptDocument from "@/app/ReceiptDocument";
 import AdminMoneyInsights from "@/app/AdminMoneyInsights";
+import MINISTRY_PRESET from "@/lib/ministry-preset";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type Service = { id: string; name: string; industry?: string; price: number; description: string; media: string; mediaType: "image" | "video"; active: boolean; custom?: boolean };
@@ -27,7 +28,9 @@ const CURRENCY_KEY = "iteration13:business-currency:v1";
 let sharedExampleCache: { token: string; value: SharedExample | null } | null = null;
 function readSharedExampleFromUrl(): SharedExample | null {
   if (typeof window === "undefined") return null;
-  const token = new URLSearchParams(window.location.search).get("example");
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("example");
+  if (!token && params.get("ministry") === "1") return MINISTRY_PRESET;
   if (!token) return null;
   if (sharedExampleCache?.token === token) return sharedExampleCache.value;
   try {
