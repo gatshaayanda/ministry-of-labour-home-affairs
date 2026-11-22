@@ -30,7 +30,7 @@ function readSharedExampleFromUrl(): SharedExample | null {
   if (typeof window === "undefined") return null;
   const params = new URLSearchParams(window.location.search);
   const token = params.get("example");
-  if (!token && params.get("ministry") === "1") return MINISTRY_PRESET;
+  if (!token && params.get("ministry") === "1") return MINISTRY_PRESET as SharedExample;
   if (!token) return null;
   if (sharedExampleCache?.token === token) return sharedExampleCache.value;
   try {
