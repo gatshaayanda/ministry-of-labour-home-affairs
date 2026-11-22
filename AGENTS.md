@@ -1,3 +1,59 @@
+# Ministry OS — project-specific operating contract
+This section takes precedence over generic storefront assumptions below. This repository is Admin Hub × Ministry of Labour and Home Affairs, Botswana: a Ministry-wide Government Service Operating System for the actual Ministry at Main Mall, Gaborone. It is a working product, not a disposable storefront prototype.
+
+## Three connected experiences
+1. Public Ministry: service discovery, search, plain-language guidance, approved announcements, help and enquiry entry.
+2. Citizen Account: citizen profile, saved services, enquiries/requests, appointment preferences, notifications, updates and history.
+3. Ministry Briefcase: unified staff/management workspace for reception, walk-in queue, triage, referrals, officer work, request progression, service catalogue, content approval/publishing, permissions, audit and reporting. The Government Service Information Hub is an internal Briefcase capability, not a prominent public destination.
+Connect discovery → guidance → enquiry/assistance → reception/queue or appointment → referral → officer progress → citizen updates → management visibility. Keep identity, catalogue, status truth and feedback consistent across all three surfaces.
+
+## Ministry service taxonomy — seed and maintain
+- Identity & Civil Registration: Omang/national identity; birth registration/certificates; marriage registration/certificates; death registration/certificates; civil-record corrections and enquiries.
+- Immigration & Citizenship: passports; work permits; residence permits; citizenship matters; immigration and border-control information/referrals.
+- Employment Services: jobseeker support/registration; employer services; jobs, internships and employment opportunities; employment programme guidance.
+- Labour & Workplace: labour disputes/complaints; conciliation/referral guidance; workers’ rights and conditions; workplace inspections; occupational health and safety; productivity and workplace development.
+- Public Information & Assistance: general Ministry assistance, service navigation, announcements, public notices and appointment/enquiry support.
+Use BWP as currency context only. A zero catalogue amount means no fee is being quoted; never invent official government fees. A Ministry OS request status is not an authoritative passport, Omang, permit or government application status.
+
+## Real-world, legal and security boundaries
+- The institution is the Ministry at Main Mall, Gaborone; Main Mall is not a separate service centre.
+- Ministry OS complements 1Gov and authorised government systems; it does not replace them. Do not claim API integrations, authoritative records, live case status, payment collection or government publishing access without approved integration and evidence.
+- Use fictional/sample records in demonstrations. Clearly identify simulations. Do not imply this system issues, renews or approves Omang, passports, permits, citizenship, civil certificates or employment outcomes.
+- Google sign-in is account authentication, not legal identity verification. Identity proofing requires a Ministry-approved process.
+- Government information follows central authoring/review/approval/publish controls. Do not overwrite 1Gov or official sources without explicit authorisation/API.
+- Apply privacy, least privilege, retention and auditability. Citizen records are never public.
+- Roles: public visitor, signed-in citizen, reception/front-desk staff, service officer, supervisor/manager and system owner/admin. Staff privileges require trusted server-enforced roles/claims or secured admins/{uid} records; a one-word UI password or Google sign-in alone must never grant Firestore privileges.
+- Workflow states distinguish received, triaged, referred, assigned, in progress, awaiting citizen, completed and closed/withdrawn. Completed means Admin Hub assistance is complete, not government approval. Appointment requests are preferences until authorised staff confirm them. Never fabricate queue position or ETA.
+- Publishing lifecycle: draft → review → approved → published → archived/withdrawn, with role checks and audit events.
+
+## Technical/data contract
+- Firebase project: min-of-labour-home-affairs. The supplied web config is public client configuration; never commit service-account private keys or Admin credentials.
+- Firebase Auth + Firestore are the intended persistent system of record. Firestore rules are in firestore.rules; keep rules, schema, indexes and application reads/writes aligned. Do not claim cloud persistence until each journey is wired and tested. Label browser-local fallback honestly.
+- UploadThing is the media path. Do not add Firebase Storage rules or rely on idb-media references across deployments. Placeholder media is acceptable until approved uploads are supplied.
+- Botswana low-data/offline is first-class: lightweight pages, compressed media, clear offline/sync states, cached public guidance and downloadable checklists. Do not promise uncached workflows/cloud writes offline. 25GB is a planning benchmark, not unlimited capacity.
+- Preserve the Iteration 13 PWA installation lock, beforeinstallprompt behavior, iOS guidance, embedded-browser handling, service worker and offline caching.
+
+## Language and visual direction
+- Carry English ↔ Setswana translation using the reusable approach in gatshaayanda/the-plug and gatshaayanda/luvies-foods. Centralise strings; official/legal terminology needs review before publication. Never silently machine-translate authoritative legal instructions.
+- Iteration 13 remains the functional foundation. John the Stylist, The Plug and Luvie’s Foods are visual/interaction references only, not architecture sources.
+- Ministry genre: trusted public-service editorial—clear, calm, accessible, contemporary, compact and mobile-first; not a loud retail storefront or generic dark agency site.
+- Palette: primary blue #2458e8, deep navy #202b3c, plus neutral surfaces/text/status tokens. Maintain WCAG AA contrast, readable typography, focus states, semantic status labels and touch targets. No fake official crests/seals or unsupported endorsement claims.
+
+## Protected features and change discipline
+- Preserve the existing racing game and Game Corner. They are deliberate Botswana/offline engagement features. Future space, racing and shooting games must be genuinely playable offline after caching/install verification and remain separate from essential government journeys.
+- Backpack is a complementary Admin Hub asset still under development; do not force it into Ministry OS.
+- Preserve existing account, request, receipt, admin, queue, PWA and offline flows. Do not delete unrelated foundation behavior.
+- Read START-HERE.md and relevant Iteration 13 standards: VISUAL-DIRECTION-STANDARD, OBJECTIVE-TO-SYSTEM-DESIGN-STANDARD, DESIGN-INTELLIGENCE-AND-EXPERIENCE-QUALITY-STANDARD, CHANGE-SAFETY-STANDARD, OPERATIONAL-TRANSPARENCY-STANDARD and PWA-INSTALLATION-LOCK.
+- Current objective: Make Ministry services navigable. Map screen changes to citizen/staff needs, capabilities and acceptance checks. Inspect full diffs, run repository checks and report actual results. Push requested completed work to main; push is not proof of build, QA, deployment, Firebase rules publication or production readiness.
+
+## Current implementation truth and next work
+- First-run catalogue is loaded through the Iteration 13 shared-example mechanism; it is a starting catalogue, not an official verified Ministry service directory until content is reviewed and approved.
+- Firebase client configuration is set for the Ministry Firebase web app. Firestore rules are committed but publishing rules and wiring every request/queue/referral/officer/publishing journey to Firestore are separate tasks.
+- Seeded entries are guidance/enquiry support only; amounts are zero/unquoted. Media is placeholder until approved content is uploaded through UploadThing.
+- Next priorities: finish visual system across Public Ministry → Citizen Account → Ministry Briefcase; wire secure Auth/Firestore persistence end-to-end; implement approval/audit/role workflows; add reviewed Setswana translations; validate offline and game caching; add Ministry-approved content/integrations only when authorised.
+
+---
+
 # Iteration 13 — Business Operating System (B.O.S.) Foundation Contract
 
 ## Fast handoff for future implementation chats
