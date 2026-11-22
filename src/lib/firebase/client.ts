@@ -1,5 +1,6 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
 const firebaseProjectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "min-of-labour-home-affairs";
 const firebaseConfig = {
@@ -14,5 +15,7 @@ const firebaseConfig = {
 export const hasFirebaseWebConfig = Boolean(firebaseConfig.apiKey && firebaseConfig.authDomain && firebaseConfig.projectId && firebaseConfig.appId && firebaseConfig.messagingSenderId);
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+// Existing conversation attachments still use the Firebase Storage SDK.
+// New Ministry media uploads should use the approved UploadThing flow.\nexport const storage = getStorage(app);
 export const db = initializeFirestore(app, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) });
 export { app };
