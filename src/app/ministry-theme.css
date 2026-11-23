@@ -129,3 +129,117 @@ html,body{background:#f4f6fa;color:var(--ministry-ink)}body{font-family:Inter,"S
 .orderCard.confirm p{max-width:76ch;color:#536174;font-size:14px;line-height:1.7}
 .orderCard.confirm p strong{color:#202b3c}
 .orderCard.confirm .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+
+
+/* Botswana Civic Modernism — unified public, citizen and Briefcase design language. */
+.serviceDemo{
+  --civic-ink:#202b3c;--civic-blue:#2458e8;--civic-muted:#536174;
+  --civic-paper:#f7f8fb;--civic-white:#fff;--civic-line:#dce3ed;
+  --civic-soft:#edf2fb;--civic-green:#16745b;
+  background:var(--civic-paper);color:var(--civic-ink)
+}
+.serviceDemo .sd-topline{min-height:34px;background:#17263d;border-bottom:1px solid #31425c}
+.serviceDemo .sd-topline .sd-wrap{min-height:34px}
+.serviceDemo .sd-connect{font-size:11px;font-weight:700;letter-spacing:.015em}
+.serviceDemo .sd-header{position:relative;z-index:5;background:#fff;border-bottom:1px solid var(--civic-line);box-shadow:0 3px 14px #202b3c08}
+.serviceDemo .sd-nav{min-height:76px;gap:22px}
+.serviceDemo .sd-brand{gap:12px;color:var(--civic-ink);text-align:left}
+.serviceDemo .sd-logo{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--civic-ink);color:#fff;font-size:14px;font-weight:900;letter-spacing:-.04em;box-shadow:inset 0 -4px 0 #2458e8}
+.serviceDemo .sd-brand>span:last-child{display:grid;gap:3px}
+.serviceDemo .sd-brand strong{font-size:14px;font-weight:850;letter-spacing:-.015em}
+.serviceDemo .sd-brand small{font-size:10px;font-weight:850;letter-spacing:.14em;color:#64748b}
+.serviceDemo .sd-nav nav{gap:8px}
+.serviceDemo .sd-nav nav button{min-height:40px;padding:0 13px;border-radius:9px;color:#344258;font-size:13px;font-weight:750}
+.serviceDemo .sd-nav nav button:hover{background:#f1f5fc;color:var(--civic-blue)}
+.serviceDemo .sd-count{display:inline-grid;place-items:center;min-width:20px;height:20px;margin-left:4px;padding:0 5px;border-radius:99px;background:#edf2fb;color:#28477e;font-size:10px}
+.serviceDemo .sd-hero{padding:clamp(40px,6vw,76px) 0;background:linear-gradient(112deg,#fbfcfe 0%,#f0f4fb 60%,#e8effb 100%);border-bottom:1px solid var(--civic-line)}
+.serviceDemo .sd-hero h1{max-width:13ch;font-size:clamp(2.7rem,6.3vw,5.2rem);line-height:1.01}
+.serviceDemo .sd-hero-copy>p{max-width:58ch;font-size:16px;line-height:1.72}
+.serviceDemo .sd-hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.serviceDemo .sd-hero-art{border:1px solid #d7e1f1;background:#e9eff9}
+.serviceDemo .sd-services{width:min(1180px,calc(100% - 40px));padding-top:34px}
+.serviceDemo .sd-storefront-bar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:18px;padding:17px 19px}
+.serviceDemo .sd-storefront-title{min-width:0}
+.serviceDemo .sd-storefront-title .sd-kicker{display:block;margin-bottom:5px}
+.serviceDemo .sd-store-availability{font-size:11px;font-weight:750}
+.serviceDemo .sd-service-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.serviceDemo .sd-service-card{display:flex;min-width:0;flex-direction:column}
+.serviceDemo .sd-service-media{min-height:130px;max-height:170px;aspect-ratio:16/7}
+.serviceDemo .sd-media-placeholder{display:flex;align-items:flex-start;justify-content:flex-end;flex-direction:column;padding:18px;background:linear-gradient(145deg,#203452,#31578f)}
+.serviceDemo .sd-media-placeholder span{font-size:9px;font-weight:850;letter-spacing:.16em;color:#dce7fa}
+.serviceDemo .sd-media-placeholder strong{max-width:18ch;margin-top:7px;font:700 21px/1.12 Georgia,serif;color:#fff}
+.serviceDemo .sd-service-info{display:flex;flex:1;flex-direction:column;gap:10px}
+.serviceDemo .sd-service-title{align-items:flex-start}
+.serviceDemo .sd-service-title h3{max-width:24ch}
+.serviceDemo .sd-service-info>p{flex:1}
+.serviceDemo .sd-order-button{width:100%;justify-content:center}
+.serviceDemo .sd-account{padding-top:22px;padding-bottom:52px}
+.serviceDemo .sd-account-compact{width:min(1040px,calc(100% - 32px))}
+.serviceDemo .sd-account-masthead{padding-bottom:17px}
+.serviceDemo .sd-account-brand-mark{position:relative;display:grid;place-items:center;background:var(--civic-ink);font-weight:900;letter-spacing:-.04em}
+.serviceDemo .sd-account-brand-mark:after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;border-radius:0 0 13px 13px;background:var(--civic-blue)}
+.serviceDemo .sd-account-ready{white-space:nowrap}
+.serviceDemo .sd-account-compact-intro{padding:30px 0 23px}
+.serviceDemo .sd-care-card{border-top:3px solid var(--civic-blue)}
+.serviceDemo .sd-care-topline{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.serviceDemo .sd-availability{font-size:11px;font-weight:750}
+.serviceDemo .sd-care-request{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding-top:18px}
+.serviceDemo .sd-care-request>div{min-width:0}
+.serviceDemo .sd-care-request h3{overflow-wrap:anywhere}
+.serviceDemo .sd-account-quick-links{margin-top:12px}
+.serviceDemo .sd-account-detail-section{scroll-margin-top:18px}
+.serviceDemo .sd-account-detail-heading h2{margin-top:4px}
+.serviceDemo .sd-account-detail-heading>span{font-size:12px;color:var(--civic-muted)}
+.serviceDemo .sd-account-request-form{scroll-margin-top:18px}
+.serviceDemo .sd-admin{width:min(1240px,calc(100% - 36px));padding-top:24px;padding-bottom:56px}
+.serviceDemo .sd-admin-login-card{border-top:4px solid var(--civic-blue)!important}
+.serviceDemo .sd-admin-login-card h1{font-family:Georgia,"Times New Roman",serif!important;color:var(--civic-ink)}
+.serviceDemo .sd-admin-login-card .sd-kicker{display:block}
+.serviceDemo .sd-admin-authorized,.serviceDemo .sd-admin-content{color:var(--civic-ink)}
+.serviceDemo .sd-os-nav{position:sticky;top:0;z-index:4;display:flex;gap:5px;overflow-x:auto;padding:7px;border:1px solid #344762;border-radius:12px;background:#1d2d46;box-shadow:0 8px 20px #202b3c16;scrollbar-width:thin}
+.serviceDemo .sd-os-nav button{flex:0 0 auto;min-height:39px;padding:0 13px;border:1px solid transparent;border-radius:8px;color:#e8eef8;font-size:12px;font-weight:750;white-space:nowrap}
+.serviceDemo .sd-os-nav button[aria-pressed=true]{background:#fff;border-color:#fff;color:#20365e;box-shadow:0 2px 6px #00000018}
+.serviceDemo .sd-admin-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin:24px 0 18px}
+.serviceDemo .sd-admin-head h2{margin-top:7px;font:700 clamp(1.8rem,3.4vw,2.7rem)/1.08 Georgia,"Times New Roman",serif;letter-spacing:-.035em;color:var(--civic-ink)}
+.serviceDemo .sd-admin-head-actions{display:flex;flex-wrap:wrap;gap:8px}
+.serviceDemo .sd-admin-panel{padding:clamp(16px,2.5vw,24px);margin:14px 0;scroll-margin-top:70px}
+.serviceDemo .sd-panel-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}
+.serviceDemo .sd-panel-head h2,.serviceDemo .sd-panel-head h3{margin-top:5px;font:700 22px/1.2 Georgia,"Times New Roman",serif;letter-spacing:-.02em;color:var(--civic-ink)}
+.serviceDemo .sd-local-pill{display:inline-flex;align-items:center;min-height:27px;padding:5px 9px;border:1px solid #d9e3f2;border-radius:99px;background:#f3f6fc;color:#3b5277;font-size:10px;font-weight:850;letter-spacing:.06em}
+.serviceDemo .sd-stats,.serviceDemo .sd-admin-stats{gap:12px}
+.serviceDemo .sd-stats article,.serviceDemo .sd-admin-stats article{border-radius:13px}
+.serviceDemo .sd-notification-list article{padding:12px 0;border-bottom:1px solid #edf0f5}
+.serviceDemo .sd-admin-help,.serviceDemo .sd-admin-empty{color:var(--civic-muted);font-size:13px;line-height:1.6}
+.serviceDemo .sd-admin-panel input,.serviceDemo .sd-admin-panel select,.serviceDemo .sd-admin-panel textarea{min-height:42px;border-radius:9px;font-size:14px}
+.serviceDemo .sd-admin-panel textarea{min-height:100px}
+.serviceDemo .sd-admin-panel button,.serviceDemo .sd-admin-head-actions button{font-weight:750}
+.serviceDemo .sd-footer{border-top:1px solid #344762}
+.serviceDemo .sd-footer-inner{padding-top:20px;padding-bottom:20px}
+.serviceDemo .sd-owner-briefcase,.serviceDemo .sd-owner-backpack{border-color:#52627a;border-radius:11px}
+.serviceDemo button:focus-visible,.serviceDemo a:focus-visible,.serviceDemo input:focus-visible,.serviceDemo textarea:focus-visible,.serviceDemo select:focus-visible{outline:3px solid #2458e8a8;outline-offset:3px}
+@media(max-width:900px){.serviceDemo .sd-service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.serviceDemo .sd-admin-head{align-items:flex-start;flex-direction:column}.serviceDemo .sd-os-nav{top:0}}
+@media(max-width:640px){
+ .serviceDemo .sd-nav{min-height:66px;gap:8px}
+ .serviceDemo .sd-logo{width:39px;height:39px}
+ .serviceDemo .sd-brand strong{max-width:36vw;font-size:12px;line-height:1.25}
+ .serviceDemo .sd-nav nav{gap:2px}
+ .serviceDemo .sd-nav nav button{padding:0 8px;font-size:11px}
+ .serviceDemo .sd-hero{padding:38px 0 42px}
+ .serviceDemo .sd-hero h1{font-size:clamp(2.55rem,12vw,3.7rem)}
+ .serviceDemo .sd-services{width:calc(100% - 28px)}
+ .serviceDemo .sd-storefront-bar{align-items:flex-start;flex-direction:column;padding:14px}
+ .serviceDemo .sd-service-grid{grid-template-columns:1fr;gap:12px}
+ .serviceDemo .sd-service-media{max-height:150px;aspect-ratio:16/6}
+ .serviceDemo .sd-service-info{padding:15px}
+ .serviceDemo .sd-account-compact{width:calc(100% - 24px);padding:14px 0}
+ .serviceDemo .sd-account-compact-intro{gap:12px;padding:23px 0 17px}
+ .serviceDemo .sd-care-topline{align-items:flex-start;flex-direction:column}
+ .serviceDemo .sd-care-request{flex-direction:column}
+ .serviceDemo .sd-admin{width:calc(100% - 24px);padding-top:14px}
+ .serviceDemo .sd-admin-head{margin:18px 0 14px}
+ .serviceDemo .sd-admin-head-actions{width:100%}
+ .serviceDemo .sd-admin-head-actions .sd-button{flex:1}
+ .serviceDemo .sd-admin-panel{padding:15px}
+ .serviceDemo .sd-panel-head{align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){.serviceDemo *{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}}
