@@ -10,6 +10,7 @@ import RacingWarmup from "@/app/games/racing-warmup";
 import ReceiptDocument from "@/app/ReceiptDocument";
 import AdminMoneyInsights from "@/app/AdminMoneyInsights";
 import MINISTRY_PRESET from "@/lib/ministry-preset";
+import { loadMyMinistryRequests, queueMinistryCitizenRequest, saveMinistryCitizenRequest, syncMinistryCitizenOutbox, type MinistryRequestInput } from "@/lib/ministry-citizen-cloud";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type Service = { id: string; name: string; industry?: string; price: number; description: string; media: string; mediaType: "image" | "video"; active: boolean; custom?: boolean };
@@ -667,6 +668,45 @@ export default function Home() {
     window.history.replaceState({}, "", url.toString());
   }, [view, ready]);
 
+  useEffect(() => {
+    if (!ready || !online) return;
+    let active = true;
+    const hydrateCitizenRequests = async () => {
+      try {
+        const remote = await loadMyMinistryRequests();
+        if (!active || !remote.length) return;
+        setData(current => {
+          const existing = new Set(current.orders.map(order => order.id));
+          const restored: DemoOrder[] = remote.filter(item => !existing.has(item.id)).map(item => ({
+            id: item.id,
+            serviceId: item.serviceId,
+            serviceName: item.serviceName,
+            price: 0,
+            dueDate: "",
+            customerName: item.fullName,
+            email: item.email,
+            whatsapp: item.phone,
+            brief: item.message,
+            status: "New request",
+            createdAt: item.createdAt,
+            paymentStatus: "Unpaid",
+            paidAmount: 0,
+          }));
+          return restored.length ? { ...current, orders: [...restored, ...current.orders] } : current;
+        });
+        const result = await syncMinistryCitizenOutbox();
+        if (active && result.synced) setNotice(result.synced + " offline request" + (result.synced === 1 ? "" : "s") + " synchronised.");
+      } catch {
+        // The public catalogue and browser-local account remain usable if guest auth or
+        // the network is unavailable; the request outbox retries when connectivity returns.
+      }
+    };
+    void hydrateCitizenRequests();
+    const retry = () => { void syncMinistryCitizenOutbox(); };
+    window.addEventListener("online", retry);
+    return () => { active = false; window.removeEventListener("online", retry); };
+  }, [ready, online]);
+
   function commitData(update: (current: DemoData) => DemoData, successMessage: string) {
     const next = update(data);
     try {
@@ -1146,7 +1186,7 @@ export default function Home() {
     const targetId = target === "services" ? "admin-service-tools" : target === "announcement" ? "admin-announcement-tools" : target === "requests" ? "admin-requests-tools" : "admin-tools";
     window.setTimeout(() => document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
   }
-  function submitOrder(event: React.FormEvent<HTMLFormElement>) {
+  async function submitOrder(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!selectedServices.length) { setNotice("Choose at least one product or service for this request."); return; }
     if (!customerName.trim() || !email.trim() || !whatsapp.trim() || !brief.trim() || !dueDate) { setNotice("Add your name, email, WhatsApp number, project brief and requested timeline."); return; }
@@ -1158,7 +1198,38 @@ export default function Home() {
     const createdAt = new Date().toISOString();
     const id = "DEMO-" + Date.now().toString(36).toUpperCase();
     const order: DemoOrder = { id, receiptNo: "RCP-" + createdAt.slice(0, 10).replaceAll("-", "") + "-" + id.slice(-5), serviceId: selectedServices[0].id, serviceName: selectedServices.map(service => service.name).join(" + "), serviceItems: selectedServices.map(({id,name,price}) => ({id,name,price})), price: Math.max(0, servicesTotal - discountAmount), ...(discountAmount ? { originalPrice: servicesTotal, discountAmount, discountCode: claim!.code } : {}), dueDate, customerName: customerName.trim(), email: email.trim(), whatsapp: whatsapp.trim(), notificationOptIn, brief: brief.trim(), status: "New request", createdAt, paymentStatus: "Unpaid", paidAmount: 0 };
-    if (!commitData(current => ({ ...current, orders: [order, ...current.orders], discountClaims: claim ? (current.discountClaims || []).map(item => item.id === claim.id ? { ...item, status: "Redeemed" as const } : item) : current.discountClaims, events: [{ id: "EV-"+Date.now().toString(36), kind: "request", label: "Customer request received · "+order.serviceName, at: new Date().toISOString() }, ...(current.events || [])] }), "Order request saved on this device. No payment was taken.")) return;
+    if (!commitData(current => ({ ...current, orders: [order, ...current.orders], discountClaims: claim ? (current.discountClaims || []).map(item => item.id === claim.id ? { ...item, status: "Redeemed" as const } : item) : current.discountClaims, events: [{ id: "EV-"+Date.now().toString(36), kind: "request", label: "Citizen request received · "+order.serviceName, at: new Date().toISOString() }, ...(current.events || [])] }), "Request saved on this device. No payment was taken.")) return;
+    const cloudRequest: MinistryRequestInput = {
+      id: order.id,
+      serviceId: order.serviceId,
+      serviceName: order.serviceName,
+      fullName: order.customerName,
+      email: order.email,
+      phone: order.whatsapp || "",
+      message: (order.brief + (order.dueDate ? "\\n\\nRequested date: " + order.dueDate : "")).slice(0, 4000),
+      preferredLanguage: "en",
+      createdAt: order.createdAt,
+    };
+    if (online) {
+      try {
+        await saveMinistryCitizenRequest(cloudRequest);
+        setNotice("Your request has been saved to your Ministry account. No payment was taken.");
+      } catch {
+        try {
+          queueMinistryCitizenRequest(cloudRequest);
+          setNotice("Your request is saved on this device. Cloud synchronisation is pending; keep this app installed and reconnect to the internet.");
+        } catch {
+          setNotice("Your request is in this session, but this browser could not save a sync copy. Please keep this page open and retry.");
+        }
+      }
+    } else {
+      try {
+        queueMinistryCitizenRequest(cloudRequest);
+        setNotice("You're offline. Your request is saved on this device and will synchronise when you're back online.");
+      } catch {
+        setNotice("You're offline and this browser could not save a sync copy. Please reconnect before leaving this page.");
+      }
+    }
     recordJourneyEvent("request_submitted", { screen: "customer-account", serviceId: order.serviceId, serviceName: order.serviceName, orderId: order.id });
     setView("account"); setOrderFormOpen(false); setSelected(null); setSelectedServiceIds([]); setCustomSelections([]); setCatalogueQuery(""); setPromoCode("");
     try { window.localStorage.removeItem(getStorageKey(CUSTOMER_SELECTION_KEY)); } catch { /* selection state is already cleared in memory */ }
