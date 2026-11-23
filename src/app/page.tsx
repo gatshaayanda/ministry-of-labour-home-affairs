@@ -1215,7 +1215,7 @@ export default function Home() {
       if (online) {
         setNotice("Your enquiry is saved on this device and synchronising with Firebase.");
         void syncMinistryCitizenOutbox().then(result => {
-          if (result.synced) setNotice("Your enquiry is saved to Firebase. No payment was taken.");
+          if (result.synced && result.remaining === 0) setNotice("Your enquiry is saved to Firebase. No payment was taken.");
           else if (result.remaining) {
             const detail = result.error === "auth/operation-not-allowed"
               ? " Enable Anonymous sign-in in Firebase Authentication."
