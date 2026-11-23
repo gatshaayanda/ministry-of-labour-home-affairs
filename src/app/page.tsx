@@ -697,7 +697,8 @@ export default function Home() {
           });
         }
         const result = await syncMinistryCitizenOutbox();
-        if (active && result.synced) setNotice(result.synced + " offline request" + (result.synced === 1 ? "" : "s") + " synchronised.");
+        if (active && result.synced) setNotice(result.synced + " offline request" + (result.synced === 1 ? "" : "s") + " synchronised to Firebase.");
+        else if (active && result.remaining) setNotice(result.remaining + " request" + (result.remaining === 1 ? " is" : "s are") + " waiting for Firebase synchronisation. Check your connection and Anonymous sign-in provider.");
       } catch {
         // Public guidance and the local account remain usable if guest auth or network access fails.
       }
@@ -1213,10 +1214,16 @@ export default function Home() {
       try {
         await saveMinistryCitizenRequest(cloudRequest);
         setNotice("Your enquiry is saved in this Citizen Account. No payment was taken.");
-      } catch {
+      } catch (error) {
         try {
           queueMinistryCitizenRequest(cloudRequest);
-          setNotice("Your request is saved on this device. Cloud synchronisation is pending; keep this app installed and reconnect to the internet.");
+          const code = typeof error === "object" && error && "code" in error ? String(error.code) : "";
+          const detail = code === "auth/operation-not-allowed"
+            ? " Enable Anonymous sign-in in Firebase Authentication."
+            : code === "permission-denied"
+              ? " Check the citizen profile and serviceRequests Firestore rules."
+              : " Check your connection and Firebase Authentication settings.";
+          setNotice("Your request is saved on this device; cloud synchronisation is pending." + detail);
         } catch {
           setNotice("Your request is in this session, but this browser could not save a sync copy. Please keep this page open and retry.");
         }
