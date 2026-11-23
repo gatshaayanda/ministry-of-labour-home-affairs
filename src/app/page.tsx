@@ -431,9 +431,11 @@ export default function Home() {
 
   useEffect(() => {
     try {
+      const isMinistryWorkspace = new URLSearchParams(window.location.search).get("ministry") === "1";
       const savedName = window.localStorage.getItem(getStorageKey("iteration13:business-name:v1"));
-      if (savedName) setBusinessName(savedName.slice(0, 48));
-    } catch { /* use the demo business name */ }
+      if (!isMinistryWorkspace && savedName) setBusinessName(savedName.slice(0, 48));
+      if (isMinistryWorkspace) setBusinessName(MINISTRY_PRESET.businessName);
+    } catch { /* use the project identity defaults */ }
     setBusinessNameReady(true);
   }, []);
 
@@ -445,6 +447,11 @@ export default function Home() {
 
   useEffect(() => {
     try {
+      if (new URLSearchParams(window.location.search).get("ministry") === "1") {
+        setSetupPathChosen(true);
+        setSetupDraftReady(true);
+        return;
+      }
       const rawDraft = window.localStorage.getItem(getStorageKey(SETUP_DRAFT_KEY));
       if (rawDraft) {
         const draft = JSON.parse(rawDraft) as Record<string, unknown>;
@@ -479,6 +486,19 @@ export default function Home() {
   }, [setupDraftReady, setupPathChosen, identityComplete, businessName, businessCurrency, brandColors, serviceName, serviceIndustry, servicePrice, serviceDescription, serviceMedia, serviceMediaType, serviceActive, announcementDraft, announcementImageDraft, announcementEnabledDraft]);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const isMinistryWorkspace = params.get("ministry") === "1";
+    if (isMinistryWorkspace) {
+      setBusinessName(MINISTRY_PRESET.businessName);
+      setBusinessCurrency("BWP");
+      setBrandColors(MINISTRY_PRESET.brandColors);
+      setSetupPathChosen(true);
+      setIdentityComplete(true);
+      setHasPreviousSetup(false);
+      setThemeReady(true);
+      setIdentityReady(true);
+      return;
+    }
     try { const savedCurrency = window.localStorage.getItem(getStorageKey(CURRENCY_KEY)); if (savedCurrency && supportedCurrencies.includes(savedCurrency as typeof supportedCurrencies[number])) setBusinessCurrency(savedCurrency); } catch { /* default to BWP */ }
     try {
       const savedPalette = window.localStorage.getItem(getStorageKey("iteration13:business-palette:v1"));
