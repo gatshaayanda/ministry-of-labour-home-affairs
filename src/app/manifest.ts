@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     id: "/",
     name: "Iteration 13 | Service Studio",
     short_name: "Iteration 13",
-    description: "A mobile-first service-order demo with customer requests, local admin tools, installation guidance and offline-aware behavior.",
+    description: "Botswana Ministry service guidance, citizen enquiries and offline-aware public service support.",
     start_url: "/",
     scope: "/",
     display: "standalone",
@@ -27,21 +27,21 @@ export default function manifest(): MetadataRoute.Manifest {
       {
         name: "Browse services",
         short_name: "Services",
-        description: "Explore the service menu and submit a request",
+        description: "Explore Ministry services and submit a citizen enquiry",
         url: "/",
         icons: [{ src: "/iteration13-icon-192.png", sizes: "192x192", type: "image/png" }]
       },
       {
         name: "My account",
         short_name: "Account",
-        description: "Review your local demo requests",
+        description: "Review your Ministry enquiries and service updates",
         url: "/?view=account",
         icons: [{ src: "/iteration13-icon-192.png", sizes: "192x192", type: "image/png" }]
       },
       {
         name: "Admin demo",
         short_name: "Admin",
-        description: "Open the local prototype operations panel",
+        description: "Open the private Ministry operations workspace",
         url: "/#admin",
         icons: [{ src: "/iteration13-icon-192.png", sizes: "192x192", type: "image/png" }]
       }
