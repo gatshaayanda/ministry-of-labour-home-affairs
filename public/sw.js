@@ -51,8 +51,8 @@ self.addEventListener("notificationclick", (event) => {
   }));
 });
 
-const CACHE_VERSION = "iteration13-shell-v32";
-const MEDIA_CACHE = "iteration13-media-v5";
+const CACHE_VERSION = "ministry-os-shell-v1";
+const MEDIA_CACHE = "ministry-os-media-v1";
 const SHELL_CACHE = CACHE_VERSION;
 const STATIC_LIMIT = 100;
 const PUBLIC_PAGE_LIMIT = 12;
@@ -177,7 +177,7 @@ async function cacheMediaUrl(value) {
 self.addEventListener("activate", event => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.filter(key => key.startsWith("theplug-shell-") || key.startsWith("theplug-media-") || (key.startsWith("iteration13-shell-") && key !== SHELL_CACHE) || (key.startsWith("iteration13-media-") && key !== MEDIA_CACHE)).map(key => caches.delete(key)));
+    await Promise.all(keys.filter(key => key.startsWith("theplug-shell-") || key.startsWith("theplug-media-") || (key.startsWith("iteration13-shell-") && key !== SHELL_CACHE) || (key.startsWith("iteration13-media-") && key !== MEDIA_CACHE) || (key.startsWith("ministry-os-shell-") && key !== SHELL_CACHE) || (key.startsWith("ministry-os-media-") && key !== MEDIA_CACHE)).map(key => caches.delete(key)));
     // Navigation preload overlaps the network request with worker startup. It is
     // optional and must never prevent activation on browsers that do not support it.
     try {
