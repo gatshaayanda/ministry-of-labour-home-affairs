@@ -39,8 +39,9 @@ export async function saveMinistryCitizenRequest(input: MinistryRequestInput): P
   const now = new Date().toISOString();
   const profileRef = doc(db, "citizens", user.uid);
   const existingProfile = await getDoc(profileRef);
-  const existingCreatedAt = existingProfile.exists() && typeof existingProfile.data().createdAt === "string"
-    ? existingProfile.data().createdAt as string
+  const existingProfileData = existingProfile.data();
+  const existingCreatedAt = typeof existingProfileData?.createdAt === "string"
+    ? existingProfileData.createdAt as string
     : now;
 
   await setDoc(profileRef, {
@@ -55,7 +56,8 @@ export async function saveMinistryCitizenRequest(input: MinistryRequestInput): P
 
   const requestRef = doc(db, "serviceRequests", input.id);
   const existingRequest = await getDoc(requestRef);
-  if (existingRequest.exists() && existingRequest.data().citizenId === user.uid) return { uid: user.uid };
+  const existingRequestData = existingRequest.data();
+  if (existingRequest.exists() && existingRequestData?.citizenId === user.uid) return { uid: user.uid };
 
   const request: MinistryCloudRequest = {
     citizenId: user.uid,
