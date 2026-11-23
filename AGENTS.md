@@ -513,3 +513,17 @@ The product owner has approved a top-down, screen-by-screen redesign of the Iter
 - Keep body and control text readable (normally 14px or larger), supporting metadata at least 12px, strong contrast, visible focus, touch-sized controls and natural wrapping. Never clip essential service or status text.
 - Visual CSS is scoped to Ministry surfaces. Preserve the underlying Iteration 13 flows, Game Corner/racing game, account request/receipt/message behavior, PWA installation lock, service worker and offline behavior.
 - Future visual changes must inspect this direction and the relevant journey before altering shared foundation CSS. Do not import Luvie's global stylesheet or copy its branding.
+
+
+## Ministry visual system completion — 23 November 2026
+- The intended genre is **Botswana Civic Modernism**: a contemporary institutional public-service experience, calm and credible, locally relevant without decorative stereotypes or fake government insignia.
+- Treat Public Ministry, Citizen Account and Ministry Briefcase as one system with three role-specific environments. Shared tokens: institutional ink `#202b3c`, Ministry blue `#2458e8`, warm neutral paper `#f7f8fb`, white surfaces, muted readable text and subtle blue-grey borders.
+- Public Ministry: clear identity/navigation, editorial service-led hero, visible citizen actions, compact service discovery and category-aware catalogue. Avoid retail/store language and commercial conversion patterns.
+- Citizen Account: personal, reassuring, task-focused; foreground current enquiry, truthful status, next steps and updates. Do not turn it into a customer loyalty or shopping dashboard.
+- Ministry Briefcase: restrained operational/data interface for staff and managers; sticky compact section navigation, legible queue/work panels, status signals and clear distinction between local demo data and secured cloud records.
+- Use the scoped rules in `src/app/ministry-theme.css` as the Ministry presentation layer. Do not alter shared Iteration 13 foundation CSS or protected workflows to achieve visual changes.
+- Keep text contrast, body/control text normally at least 14px, metadata at least 12px, visible focus, 44px-class touch targets, responsive wrapping and reduced-motion support.
+- No official coat of arms, seal, flag treatment, Ministry endorsement or Botswana-specific photography should be fabricated. Use approved assets when supplied; until then prefer restrained typographic identity and abstract civic geometry over generic stock/business imagery.
+- PWA installation identity remains protected under the Iteration 13 install contract. Ministry visible web metadata may be Ministry-specific, but do not change app name, icon assets or install title until the complete identity migration is deliberately implemented and verified as one change.
+- This visual layer changes presentation only. It does not upgrade the owner demo gate to staff authentication, make browser-local Briefcase records cloud-persistent, verify official service content, or create integrations with 1Gov or government systems.
+- QA visual journeys at mobile and desktop widths: Public Ministry service discovery → enquiry start; Citizen Account current request/history; Briefcase navigation, queue/work panels and forms. Verify no overflow, clipped text, low contrast or loss of existing interactions.
