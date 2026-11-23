@@ -493,7 +493,8 @@ export default function Home() {
       setBusinessCurrency("BWP");
       setBrandColors(MINISTRY_PRESET.brandColors);
       setSetupPathChosen(true);
-      setIdentityComplete(true);
+      // Let the one-shot Ministry preset loader initialise the public catalogue.
+      setIdentityComplete(false);
       setHasPreviousSetup(false);
       setThemeReady(true);
       setIdentityReady(true);
