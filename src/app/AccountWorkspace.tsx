@@ -50,7 +50,8 @@ export default function AccountWorkspace({ businessName, currency, orders, disco
   const [basketOpen, setBasketOpen] = useState(false);
   const [lookupOpen, setLookupOpen] = useState(false);
   const [rewardsOpen, setRewardsOpen] = useState(false);
-  const isMinistryAccount = /ministry of labour and home affairs/i.test(businessName);\n  const money = (amount: number) => new Intl.NumberFormat("en", { style: "currency", currency, maximumFractionDigits: 2 }).format(amount);
+  const isMinistryAccount = /ministry of labour and home affairs/i.test(businessName);
+  const money = (amount: number) => new Intl.NumberFormat("en", { style: "currency", currency, maximumFractionDigits: 2 }).format(amount);
   useEffect(() => { const timer = window.setInterval(() => setClockNow(Date.now()), 60000); return () => window.clearInterval(timer); }, []);
   const normalizedEmail = email.trim().toLowerCase();
   const filteredOrders = useMemo(() => normalizedEmail ? orders.filter(order => order.email.trim().toLowerCase() === normalizedEmail) : [], [orders, normalizedEmail]);
