@@ -956,7 +956,16 @@ export default function Home() {
     let alreadyVisited = false;
     try { alreadyVisited = window.localStorage.getItem("iteration13:shared-example-visited:" + sharedExample.id) === "yes"; }
     catch { /* If storage is unavailable, preserve the direct first-visit experience. */ }
-    if (!alreadyVisited) loadSharedBusinessExample();
+    if (!alreadyVisited) {
+      loadSharedBusinessExample();
+    } else {
+      // Returning Ministry users reopen their existing local workspace, not setup.
+      setBusinessName(sharedExample.businessName);
+      setBusinessCurrency(sharedExample.currency);
+      setBrandColors(sharedExample.brandColors);
+      setIdentityComplete(true);
+      setView("shop");
+    }
   }, [sharedExample, isSharedExampleWorkspace, identityComplete]);
 
   const paidTotal = data.orders.reduce((sum, order) => sum + (order.paidAmount || 0), 0);
