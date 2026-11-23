@@ -97,4 +97,4 @@ if (failures.length) {
   failures.forEach(failure => console.error(" - " + failure));
   process.exit(1);
 }
-console.log("IDENTITY VERIFIED — Iteration 13 app metadata and service-worker cache are isolated.");
+console.log("IDENTITY VERIFIED — protected install identity and isolated Ministry service-worker cache are intact.");
