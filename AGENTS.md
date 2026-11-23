@@ -462,3 +462,11 @@ The product owner has approved a top-down, screen-by-screen redesign of the Iter
 - Load the saved business identity, catalogue, uploaded media URLs, announcement, customer requests, Account records, owner Briefcase notes and activity from their existing keys without reseeding, replacing or resetting them.
 - Continue must preserve the existing workspace and remove only obsolete launch query parameters from the URL; it must not migrate, clear or overwrite browser-local records.
 - Verify the existing workspace resumes unchanged, new requests still appear in Account and owner Briefcase, and the setup path remains independent. Keep Setup as the current QA checkpoint; do not redesign Account or Briefcase.
+
+## Ministry visual implementation notes — 23 November 2026
+- Dominant visual genre: **Quiet**, with a restrained **Data** expression inside Ministry Briefcase. Quiet suits citizens seeking clear, reassuring public-service guidance; Data is reserved for staff queues, triage and management information.
+- Art direction: **Botswana Civic Modernism** — warm-neutral paper, deep institutional ink, accessible Ministry blue, editorial serif display headings paired with readable sans-serif interface text, fine borders and subtle depth. This borrows Luvie's Foods' disciplined hierarchy, warm surfaces, typography and careful form treatment; do not copy its food brand, red palette, dark storefront or retail language.
+- Public Ministry and Citizen Account share one identity and token system. The citizen experience uses Ministry terms (services, enquiries, requests, updates), not customer/store language.
+- Keep body and control text readable (normally 14px or larger), supporting metadata at least 12px, strong contrast, visible focus, touch-sized controls and natural wrapping. Never clip essential service or status text.
+- Visual CSS is scoped to Ministry surfaces. Preserve the underlying Iteration 13 flows, Game Corner/racing game, account request/receipt/message behavior, PWA installation lock, service worker and offline behavior.
+- Future visual changes must inspect this direction and the relevant journey before altering shared foundation CSS. Do not import Luvie's global stylesheet or copy its branding.
