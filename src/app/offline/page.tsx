@@ -16,8 +16,8 @@ export default function OfflinePage() {
           <p>Service images already cached can be viewed offline. New UploadThing uploads can be staged locally: selected images (4 MB) and videos (16 MB) are stored in IndexedDB and marked Pending Sync. When you reconnect with the matching media field open, the app uploads them to UploadThing and replaces the local reference only after confirmation. Pending media is device-specific, capped at 64 MB, and is not guaranteed to sync while the app is closed. External links, remote Firebase features and other server-dependent actions still need internet. Other offline text edits and Briefcase demo changes remain browser-local and are not queued for server delivery.</p>
           <p><strong>Before going offline:</strong> open Ministry OS while connected, visit the important service guidance and images, then reload once while still online so the latest app shell and eligible images can be prepared.</p>
           <div className="actions centered">
-            <Link className="button buttonPrimary" href="/?view=account#service-order">Try citizen journey</Link>
-            <Link className="button buttonLight" href="/">Open Ministry OS</Link>
+            <Link className="button buttonPrimary" href="/">Browse cached services</Link>
+            <Link className="button buttonLight" href="/?view=account">Open Citizen Account</Link>
           </div>
         </section>
       </div>
