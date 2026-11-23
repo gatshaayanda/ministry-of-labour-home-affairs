@@ -102,10 +102,10 @@ export default function AccountWorkspace({ businessName, currency, orders, disco
     }
   }
 
-  const availabilityLabel = availability === "available" ? "Business available" : availability === "limited" ? "Limited availability" : "Currently unavailable";
+  const availabilityLabel = availability === "available" ? "Service guidance available" : availability === "limited" ? "Limited availability" : "Currently unavailable";
   const availabilityColor = availability === "available" ? "#16866a" : availability === "limited" ? "#b7791f" : "#c04444";
   const customerGreeting = customerName?.trim() || currentOrder?.customerName || "there";
-  const careMessage = !currentOrder ? "Your next request will appear here once you send it." : ["New request", "Received"].includes(currentOrder.status) ? "We've received your request. The business will review it and keep you updated." : ["Completed", "Declined", "Cancelled"].includes(currentOrder.status) ? "This request has reached its latest status. You can open the details whenever you need them." : "Your request is with the business. We'll let you know when there's an update.";
+  const careMessage = !currentOrder ? "Your next Ministry enquiry will appear here once you submit it." : ["New request", "Received"].includes(currentOrder.status) ? "We've received your request. The business will review it and keep you updated." : ["Completed", "Declined", "Cancelled"].includes(currentOrder.status) ? "This request has reached its latest status. You can open the details whenever you need them." : "Your enquiry is in the Ministry assistance workflow. Check here for the latest available update.";
   const lastBusinessUpdate = currentOrder ? [...(currentOrder.messages || [])].filter(message => message.from === "studio").sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]?.createdAt || currentOrder.statusUpdatedAt : undefined;
   const formatShortDate = (value: string) => { try { return new Date(value).toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); } catch { return value; } };
   const timeAgo = (value: string) => { const minutes = Math.max(0, Math.floor((clockNow - new Date(value).getTime()) / 60000)); if (!Number.isFinite(minutes)) return formatShortDate(value); if (minutes < 1) return "just now"; if (minutes < 60) return minutes + " min ago"; const hours = Math.floor(minutes / 60); if (hours < 24) return hours + (hours === 1 ? " hour ago" : " hours ago"); const days = Math.floor(hours / 24); return days + (days === 1 ? " day ago" : " days ago"); };
@@ -116,7 +116,7 @@ export default function AccountWorkspace({ businessName, currency, orders, disco
         <span className="sd-account-brand-mark" aria-hidden="true">{monogram}<span className="sd-account-heart">♥</span></span>
         <div><span className="sd-account-overline">{businessName}</span><strong>Citizen account</strong></div>
       </div>
-      <span className="sd-account-ready"><span aria-hidden="true">●</span> On this device</span>
+      <span className="sd-account-ready"><span aria-hidden="true">●</span> Guest session</span>
     </header>
 
     <div className="sd-account-compact-intro">
@@ -128,14 +128,14 @@ export default function AccountWorkspace({ businessName, currency, orders, disco
       <div className="sd-care-topline"><div className="sd-care-heading"><span className="sd-kicker">YOUR CITIZEN SERVICES</span><h2 id="sd-care-title">Current request</h2></div><span className="sd-availability" style={{ "--availability-color": availabilityColor } as React.CSSProperties}><i />{availabilityLabel}</span></div>
       {currentOrder ? <>
         <div className="sd-care-request"><div><span className="sd-care-label">REQUEST DETAILS</span><h3>{currentOrder.serviceItems?.length ? currentOrder.serviceItems.map(item => item.name).join(" + ") : currentOrder.serviceName}</h3><p>Received {timeAgo(currentOrder.createdAt)} · {formatShortDate(currentOrder.createdAt)} · {typeof currentOrder.quotedPrice === "number" ? "Proposed quote · " + money(currentOrder.quotedPrice) : currentOrder.serviceItems?.some(item => item.price === 0) ? "Quote to be confirmed" : "Catalogue estimate · " + money(currentOrder.price)}</p></div><span className="sd-care-status">{currentOrder.status}</span></div>
-        <div className="sd-care-next"><span className="sd-care-label">WHAT HAPPENS NEXT</span><strong>{currentOrder.status === "New request" ? "Business review" : currentOrder.status === "Completed" ? "Request completed" : currentOrder.status === "Declined" ? "Request closed" : currentOrder.status === "Quote ready" ? "Your review" : currentOrder.status === "Reviewing" ? "Business reviewing" : currentOrder.status === "In progress" ? "Business working" : "Business handling"}</strong><p>{careMessage}</p>{lastBusinessUpdate && <small>Last business update · {formatShortDate(lastBusinessUpdate)}</small>}</div>
+        <div className="sd-care-next"><span className="sd-care-label">WHAT HAPPENS NEXT</span><strong>{currentOrder.status === "New request" ? "Ministry review" : currentOrder.status === "Completed" ? "Request completed" : currentOrder.status === "Declined" ? "Request closed" : currentOrder.status === "Quote ready" ? "Your review" : currentOrder.status === "Reviewing" ? "Ministry review" : currentOrder.status === "In progress" ? "Assistance in progress" : "Assistance in progress"}</strong><p>{careMessage}</p>{lastBusinessUpdate && <small>Last business update · {formatShortDate(lastBusinessUpdate)}</small>}</div>
         <button type="button" className="sd-care-conversation" onClick={() => { setOpenThread(currentOrder.id); document.getElementById("care-request-" + currentOrder.id)?.scrollIntoView({behavior:"smooth",block:"start"}); }}>Open conversation <span>↗</span></button>
       </> : <div className="sd-care-next sd-care-empty-state"><strong>Your next step starts here.</strong><p>{careMessage}</p><button type="button" className="sd-care-empty-action" onClick={selectedServices.length ? onContinueRequest : onBrowse}><span className="sd-care-action-mark" aria-hidden="true">{selectedServices.length ? "✓" : "＋"}</span><span className="sd-care-action-copy"><strong>{selectedServices.length ? `Continue with ${selectedServices.length} selected ${selectedServices.length === 1 ? "item" : "items"}` : "Browse Ministry services"}</strong><small>{selectedServices.length ? selectedServices.some(item => item.custom || item.price <= 0) ? "Review your request · Price to be confirmed" : `Review your request · ${money(selectedServices.reduce((sum, item) => sum + item.price, 0))}` : "Find guidance and choose a service"}</small></span><span className="sd-care-action-arrow" aria-hidden="true">→</span></button></div>}
     </section>
 
     <div className={"sd-account-quick-stats" + (!currentOrder || selectedServices.length ? " has-no-action" : "")} aria-label="Account summary">
       <div><strong>{openOrders}</strong><span>Active {openOrders === 1 ? "request" : "requests"}</span></div>
-      <div><strong>{newUpdates}</strong><span>Business {newUpdates === 1 ? "message" : "messages"}</span></div>
+      <div><strong>{newUpdates}</strong><span>Ministry {newUpdates === 1 ? "update" : "updates"}</span></div>
       {currentOrder && !selectedServices.length && <button type="button" onClick={onNewRequest}>＋ Start another request</button>}
     </div>
 
@@ -188,7 +188,7 @@ export default function AccountWorkspace({ businessName, currency, orders, disco
 
     <details className="sd-account-collapsible" id="care-rewards" open={rewardsOpen} onToggle={event => setRewardsOpen(event.currentTarget.open)}><summary><span>Rewards</span><b>{matchingRewards.length ? `${matchingRewards.length} available` : "View details"}</b></summary><div><p>Rewards earned in the Store are linked to this email.</p>{matchingRewards.map(claim => <article key={claim.id}><strong>{claim.code}</strong><b>{money(claim.amount)} off</b><span>{claim.status}</span></article>)}{matchingRewards.length === 0 && <p className="sd-account-notification-empty">Rewards earned in the Store will appear here when linked to your email address.</p>}</div></details>
 
-    {announcementActive && announcement.trim() && <aside className="sd-account-announcement"><span className="sd-kicker">FROM {businessName.toUpperCase()}</span><h3>Business update</h3><p>{announcement}</p></aside>}
+    {announcementActive && announcement.trim() && <aside className="sd-account-announcement"><span className="sd-kicker">FROM {businessName.toUpperCase()}</span><h3>Ministry notice</h3><p>{announcement}</p></aside>}
     {uploadNotice && <p className="sd-account-feedback" role="status">{uploadNotice}</p>}
 
     <details className="sd-account-lookup-compact" open={lookupOpen} onToggle={event => setLookupOpen(event.currentTarget.open)}><summary>{normalizedEmail ? "Using " + email : "Find your account"} <b>Change email</b></summary><div><label htmlFor="account-email">Email used on your request</label><input id="account-email" type="email" value={email} onChange={event => setEmail(event.target.value)} placeholder="Enter your email address" autoComplete="email" /><p>This browser uses your Firebase guest session to retrieve requests. Changing devices requires an approved sign-in method.</p></div></details>
