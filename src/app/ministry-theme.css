@@ -117,3 +117,15 @@ html,body{background:#f4f6fa;color:var(--ministry-ink)}body{font-family:Inter,"S
 .serviceDemo .sd-order-form .sd-submit{width:100%;min-height:50px;font-size:15px}
 .serviceDemo .sd-privacy-note{margin:0;text-align:center;color:var(--ministry-muted);font-size:12px;line-height:1.5}
 @media(max-width:620px){.serviceDemo .sd-form-two{grid-template-columns:1fr}.serviceDemo .sd-catalogue-add>div{flex-direction:column}.serviceDemo .sd-catalogue-add button{min-height:42px}.serviceDemo .sd-enquiry-services>label{grid-template-columns:20px minmax(0,1fr)}.serviceDemo .sd-enquiry-services strong{grid-column:2;text-align:left}}
+
+/* Offline guidance uses the same Ministry editorial surface as the public landing. */
+.orderPage{min-height:100svh;padding:24px 0;background:#f7f8fb;color:#202b3c}
+.orderWrap{width:min(900px,calc(100% - 28px));margin:0 auto}
+.orderHeader{padding:8px 0 20px}
+.orderHeader .logo{color:#202b3c}
+.orderCard.confirm{padding:clamp(20px,4vw,38px);border:1px solid #dce3ed;border-radius:18px;background:#fff;box-shadow:0 12px 34px rgba(32,43,60,.07)}
+.orderCard.confirm .kicker{color:#2458e8;font-size:11px;font-weight:850;letter-spacing:.15em}
+.orderCard.confirm h1{max-width:16ch;margin:10px 0 18px;font:700 clamp(2rem,5vw,3.2rem)/1.05 Georgia,"Times New Roman",serif;letter-spacing:-.04em;color:#202b3c}
+.orderCard.confirm p{max-width:76ch;color:#536174;font-size:14px;line-height:1.7}
+.orderCard.confirm p strong{color:#202b3c}
+.orderCard.confirm .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
