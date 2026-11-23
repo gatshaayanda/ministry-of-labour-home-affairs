@@ -25,6 +25,7 @@ export type MinistryCloudRequest = MinistryRequestInput & {
 
 const OUTBOX_KEY = "ministry:citizen-request-outbox:v1";
 let citizenAuthPromise: Promise<User> | null = null;
+let outboxSyncPromise: Promise<{ synced: number; remaining: number; error?: string }> | null = null;
 
 async function ensureCitizen(): Promise<User> {
   if (auth.currentUser) return auth.currentUser;
@@ -89,21 +90,27 @@ export function queueMinistryCitizenRequest(input: MinistryRequestInput): void {
   }
 }
 
-export async function syncMinistryCitizenOutbox(): Promise<{ synced: number; remaining: number }> {
-  if (typeof navigator !== "undefined" && !navigator.onLine) return { synced: 0, remaining: readOutbox().length };
-  const queue = readOutbox();
-  let synced = 0;
-  for (const item of queue) {
-    try {
-      await saveMinistryCitizenRequest(item);
-      removeFromOutbox(item.id);
-      synced += 1;
-    } catch {
-      // Keep unsent requests locally. A later online event or explicit retry can try again.
-      break;
+export function syncMinistryCitizenOutbox(): Promise<{ synced: number; remaining: number; error?: string }> {
+  if (outboxSyncPromise) return outboxSyncPromise;
+  outboxSyncPromise = (async () => {
+    if (typeof navigator !== "undefined" && !navigator.onLine) return { synced: 0, remaining: readOutbox().length, error: "offline" };
+    const queue = readOutbox();
+    let synced = 0;
+    let errorCode: string | undefined;
+    for (const item of queue) {
+      try {
+        await saveMinistryCitizenRequest(item);
+        removeFromOutbox(item.id);
+        synced += 1;
+      } catch (error) {
+        errorCode = typeof error === "object" && error && "code" in error ? String(error.code) : "sync-failed";
+        // Keep unsent requests locally. A later online event or explicit retry can try again.
+        break;
+      }
     }
-  }
-  return { synced, remaining: readOutbox().length };
+    return { synced, remaining: readOutbox().length, ...(errorCode ? { error: errorCode } : {}) };
+  })().finally(() => { outboxSyncPromise = null; });
+  return outboxSyncPromise;
 }
 
 function readOutbox(): MinistryRequestInput[] {
