@@ -674,37 +674,36 @@ export default function Home() {
     const hydrateCitizenRequests = async () => {
       try {
         const remote = await loadMyMinistryRequests();
-        if (!active || !remote.length) return;
-        setData(current => {
-          const existing = new Set(current.orders.map(order => order.id));
-          const restored: DemoOrder[] = remote.filter(item => !existing.has(item.id)).map(item => ({
-            id: item.id,
-            serviceId: item.serviceId,
-            serviceName: item.serviceName,
-            price: 0,
-            dueDate: "",
-            customerName: item.fullName,
-            email: item.email,
-            whatsapp: item.phone,
-            brief: item.message,
-            status: "New request",
-            createdAt: item.createdAt,
-            paymentStatus: "Unpaid",
-            paidAmount: 0,
-          }));
-          return restored.length ? { ...current, orders: [...restored, ...current.orders] } : current;
-        });
+        if (!active) return;
+        if (remote.length) {
+          setData(current => {
+            const existing = new Set(current.orders.map(order => order.id));
+            const restored: DemoOrder[] = remote.filter(item => !existing.has(item.id)).map(item => ({
+              id: item.id,
+              serviceId: item.serviceId,
+              serviceName: item.serviceName,
+              price: 0,
+              dueDate: "",
+              customerName: item.fullName,
+              email: item.email,
+              whatsapp: item.phone,
+              brief: item.message,
+              status: "New request",
+              createdAt: item.createdAt,
+              paymentStatus: "Unpaid",
+              paidAmount: 0,
+            }));
+            return restored.length ? { ...current, orders: [...restored, ...current.orders] } : current;
+          });
+        }
         const result = await syncMinistryCitizenOutbox();
         if (active && result.synced) setNotice(result.synced + " offline request" + (result.synced === 1 ? "" : "s") + " synchronised.");
       } catch {
-        // The public catalogue and browser-local account remain usable if guest auth or
-        // the network is unavailable; the request outbox retries when connectivity returns.
+        // Public guidance and the local account remain usable if guest auth or network access fails.
       }
     };
     void hydrateCitizenRequests();
-    const retry = () => { void syncMinistryCitizenOutbox(); };
-    window.addEventListener("online", retry);
-    return () => { active = false; window.removeEventListener("online", retry); };
+    return () => { active = false; };
   }, [ready, online]);
 
   function commitData(update: (current: DemoData) => DemoData, successMessage: string) {
@@ -1230,7 +1229,7 @@ export default function Home() {
         setNotice("You're offline and this browser could not save a sync copy. Please reconnect before leaving this page.");
       }
     }
-    recordJourneyEvent("request_submitted", { screen: "customer-account", serviceId: order.serviceId, serviceName: order.serviceName, orderId: order.id });
+    recordJourneyEvent("request_submitted", { screen: "citizen-account", serviceId: order.serviceId, serviceName: order.serviceName, orderId: order.id });
     setView("account"); setOrderFormOpen(false); setSelected(null); setSelectedServiceIds([]); setCustomSelections([]); setCatalogueQuery(""); setPromoCode("");
     try { window.localStorage.removeItem(getStorageKey(CUSTOMER_SELECTION_KEY)); } catch { /* selection state is already cleared in memory */ }
     window.scrollTo({ top: 0, behavior: "smooth" });
