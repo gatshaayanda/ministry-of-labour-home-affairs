@@ -50,7 +50,7 @@ export async function saveMinistryCitizenRequest(input: MinistryRequestInput): P
     updatedAt: now,
   }, { merge: true });
 
-  const request: MinistryCloudRequest = {
+  const requestRef = doc(db, "serviceRequests", input.id);\n  const existingRequest = await getDoc(requestRef);\n  if (existingRequest.exists() && existingRequest.data().citizenId === user.uid) return { uid: user.uid };\n\n  const request: MinistryCloudRequest = {
     citizenId: user.uid,
     serviceId: input.serviceId.slice(0, 120),
     serviceName: input.serviceName.slice(0, 160),
@@ -64,7 +64,7 @@ export async function saveMinistryCitizenRequest(input: MinistryRequestInput): P
     updatedAt: now,
     channel: "web",
   };
-  await setDoc(doc(db, "serviceRequests", input.id), request);
+  await setDoc(requestRef, request);
   return { uid: user.uid };
 }
 
