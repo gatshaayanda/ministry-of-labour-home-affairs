@@ -1,3 +1,42 @@
+# Ministry OS — current delivery contract (updated 23 November 2026)
+
+This section supersedes older setup, storefront, and browser-local prototype assumptions further down this file. The project is Admin Hub × the actual Ministry of Labour and Home Affairs at Main Mall, Gaborone.
+
+## Current architecture truth
+- Firebase project min-of-labour-home-affairs is configured in src/lib/firebase/client.ts; Auth, Firestore and persistent multi-tab Firestore local cache are initialized. firestore.rules defines permitted client access.
+- Citizen request creation is wired to Firebase Auth anonymous guest sessions and Firestore citizens/{uid} + serviceRequests/{requestId}. Guest auth is not legal identity verification and is browser/device bound; it does not provide cross-device account recovery.
+- The citizen request outbox stores offline submissions locally and retries when connectivity returns. A successful Firestore write is cloud-persisted; an offline queued request is not yet cloud-persisted. Never label a queued item as submitted to Ministry staff until sync succeeds.
+- Citizen request fields must match firestore.rules: citizenId, serviceId, serviceName, fullName, email, phone, message, preferredLanguage, status, createdAt, updatedAt, channel. Creation status is submitted; never send extra fields unless rules are deliberately revised and tested.
+- Citizen profile fields must match rules: uid, displayName, email, phone, preferredLanguage, createdAt, updatedAt. Use en or tn. Keep records private and query only the authenticated citizen's own requests.
+- The current citizen request flow persists a cloud request when online, queues a local outbox item offline, and hydrates the authenticated guest's request history when online. Existing messages, attachments, receipts, queue management, staff tasks and other inherited workspace data are not automatically cloud-backed just because Firebase is configured.
+- The owner Briefcase currently includes a browser-side demonstration access gate. It is not staff authentication and MUST NOT be used to read or write protected Firestore collections. Staff operations require Firebase authentication plus an out-of-band provisioned admins/{uid} role (owner, admin, or staff) enforced by Firestore rules. Never bypass this with a UI password or anonymous auth.
+- If anonymous auth is disabled in Firebase Console, citizen cloud requests cannot authenticate; retain local outbox behavior and report the exact provider requirement rather than weakening rules.
+- Firestore offline cache helps previously authenticated devices and cached reads. It does not guarantee first-time offline authentication, uncached data, attachment upload, or remote writes while disconnected.
+
+## Citizen experience / Luvie's Foods interaction reference
+- Follow Luvie's compact, polished sequence: discover service → select one or more services → review selection → provide contact details and a clear enquiry → submit → land in Citizen Account with request status and next steps.
+- Translate the interaction pattern, not the restaurant/menu/payment domain. Ministry requests are enquiries/assistance requests; no checkout, invented government fees, or payment step.
+- Phone number and appointment date are optional preferences. Email, name and a useful enquiry are required in the current flow. Any appointment is unconfirmed until authorised Ministry staff confirm it.
+- Clearly state that Ministry OS does not issue or approve Omang, passports, permits, certificates, citizenship or employment outcomes. The guest account is not identity proofing.
+- Request status semantics remain distinct: received/submitted, triaged, referred, assigned, in progress, awaiting citizen, completed, closed/withdrawn. Completion means Admin Hub assistance completed, not government approval.
+- Account copy should say Citizen Account, Ministry services, enquiry, request, update and referral—not customer, store order, product or business.
+
+## Visual and PWA rules
+- Visual genre: Botswana Civic Modernism / Quiet public-service editorial, with Data reserved for Briefcase operations. Use Luvie's Foods for calm surface hierarchy, typography, responsive forms and compact request flow. Never copy its food branding, red palette or retail language.
+- Maintain readable body/control text (normally 14px+), supporting metadata 12px+, strong contrast, visible keyboard focus, semantic headings/statuses, touch-sized controls and mobile-first natural wrapping.
+- Ministry CSS must remain scoped to Ministry surfaces. Do not make unrelated changes to shared Iteration 13 foundation components.
+- Preserve the protected Iteration 13 install flow: native beforeinstallprompt capture and prompt directly from the user action, compact dismissible install card, iOS Safari guidance, embedded-browser gate, service-worker update behavior and offline app-shell caching. Do not replace or delay this flow.
+- Keep the verified PWA app name/icon/applicationName contract unchanged unless the identity verifier, actual icon assets, install card and all manifest references are deliberately updated together. Ministry SEO/OpenGraph/Twitter descriptions and app shortcut descriptions should be Ministry-specific.
+- Preserve the Game Corner and racing game. Offline games must be tested after installation/cache warm-up, not merely assumed available.
+
+## QA requirements for every change
+- Run npm run verify:identity, npm run verify:offline, npm run verify:typography, npx tsc --noEmit, and npm run build when tooling is available.
+- Test citizen request submission online and verify both citizens/{uid} and serviceRequests/{id} in the Ministry Firebase project; test own-request reload and privacy against another guest.
+- Test offline request queue, app close/reopen, reconnection and exactly-once sync. Test first install online then reopen offline; do not claim first-time offline login.
+- Test Android Chrome install prompt, iOS Safari guidance, embedded-browser gate, app update prompt, and installed app icon/manifest. Do not claim any QA step that was not actually performed.
+- Keep all unfinished cloud workflows explicitly labelled. Never imply that the staff Briefcase has cloud persistence until role-protected reads/writes are implemented and tested.
+
+---
 # Ministry OS — project-specific operating contract
 This section takes precedence over generic storefront assumptions below. This repository is Admin Hub × Ministry of Labour and Home Affairs, Botswana: a Ministry-wide Government Service Operating System for the actual Ministry at Main Mall, Gaborone. It is a working product, not a disposable storefront prototype.
 
