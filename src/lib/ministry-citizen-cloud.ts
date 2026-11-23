@@ -24,11 +24,14 @@ export type MinistryCloudRequest = MinistryRequestInput & {
 };
 
 const OUTBOX_KEY = "ministry:citizen-request-outbox:v1";
+let citizenAuthPromise: Promise<User> | null = null;
 
 async function ensureCitizen(): Promise<User> {
   if (auth.currentUser) return auth.currentUser;
-  const credential = await signInAnonymously(auth);
-  return credential.user;
+  if (!citizenAuthPromise) {
+    citizenAuthPromise = signInAnonymously(auth).then(credential => credential.user).finally(() => { citizenAuthPromise = null; });
+  }
+  return citizenAuthPromise;
 }
 
 export async function saveMinistryCitizenRequest(input: MinistryRequestInput): Promise<{ uid: string }> {
