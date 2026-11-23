@@ -1206,7 +1206,7 @@ export default function Home() {
       fullName: order.customerName,
       email: order.email,
       phone: order.whatsapp || "",
-      message: (order.brief + (order.dueDate ? "\\n\\nAppointment preference (not confirmed): " + order.dueDate : "")).slice(0, 4000),
+      message: (order.brief + (order.dueDate ? "\n\nAppointment preference (not confirmed): " + order.dueDate : "")).slice(0, 4000),
       preferredLanguage: "en",
       createdAt: order.createdAt,
     };
