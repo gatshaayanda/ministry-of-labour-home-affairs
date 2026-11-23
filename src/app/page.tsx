@@ -10,7 +10,7 @@ import RacingWarmup from "@/app/games/racing-warmup";
 import ReceiptDocument from "@/app/ReceiptDocument";
 import AdminMoneyInsights from "@/app/AdminMoneyInsights";
 import MINISTRY_PRESET from "@/lib/ministry-preset";
-import { loadMyMinistryRequests, queueMinistryCitizenRequest, saveMinistryCitizenRequest, syncMinistryCitizenOutbox, type MinistryRequestInput } from "@/lib/ministry-citizen-cloud";
+import { loadMyMinistryRequests, queueMinistryCitizenRequest, syncMinistryCitizenOutbox, type MinistryRequestInput } from "@/lib/ministry-citizen-cloud";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type Service = { id: string; name: string; industry?: string; price: number; description: string; media: string; mediaType: "image" | "video"; active: boolean; custom?: boolean };
@@ -1186,7 +1186,7 @@ export default function Home() {
     const targetId = target === "services" ? "admin-service-tools" : target === "announcement" ? "admin-announcement-tools" : target === "requests" ? "admin-requests-tools" : "admin-tools";
     window.setTimeout(() => document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
   }
-  async function submitOrder(event: React.FormEvent<HTMLFormElement>) {
+  function submitOrder(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!selectedServices.length) { setNotice("Select at least one Ministry service area."); return; }
     if (!customerName.trim() || !email.trim() || !brief.trim()) { setNotice("Add your name, email address and a short description of the help you need."); return; }
@@ -1210,31 +1210,26 @@ export default function Home() {
       preferredLanguage: "en",
       createdAt: order.createdAt,
     };
-    if (online) {
-      try {
-        await saveMinistryCitizenRequest(cloudRequest);
-        setNotice("Your enquiry is saved in this Citizen Account. No payment was taken.");
-      } catch (error) {
-        try {
-          queueMinistryCitizenRequest(cloudRequest);
-          const code = typeof error === "object" && error && "code" in error ? String(error.code) : "";
-          const detail = code === "auth/operation-not-allowed"
-            ? " Enable Anonymous sign-in in Firebase Authentication."
-            : code === "permission-denied"
-              ? " Check the citizen profile and serviceRequests Firestore rules."
-              : " Check your connection and Firebase Authentication settings.";
-          setNotice("Your request is saved on this device; cloud synchronisation is pending." + detail);
-        } catch {
-          setNotice("Your request is in this session, but this browser could not save a sync copy. Please keep this page open and retry.");
-        }
+    try {
+      queueMinistryCitizenRequest(cloudRequest);
+      if (online) {
+        setNotice("Your enquiry is saved on this device and synchronising with Firebase.");
+        void syncMinistryCitizenOutbox().then(result => {
+          if (result.synced) setNotice("Your enquiry is saved to Firebase. No payment was taken.");
+          else if (result.remaining) {
+            const detail = result.error === "auth/operation-not-allowed"
+              ? " Enable Anonymous sign-in in Firebase Authentication."
+              : result.error === "permission-denied"
+                ? " Check the citizens and serviceRequests Firestore rules."
+                : " Check your connection and Firebase Authentication settings.";
+            setNotice("Your enquiry remains saved on this device; cloud synchronisation is pending." + detail);
+          }
+        });
+      } else {
+        setNotice("You're offline. Your enquiry is saved on this device and will synchronise when you're back online.");
       }
-    } else {
-      try {
-        queueMinistryCitizenRequest(cloudRequest);
-        setNotice("You're offline. Your request is saved on this device and will synchronise when you're back online.");
-      } catch {
-        setNotice("You're offline and this browser could not save a sync copy. Please reconnect before leaving this page.");
-      }
+    } catch {
+      setNotice("Your enquiry is in this session, but this browser could not save a sync copy. Please keep this page open and retry.");
     }
     recordJourneyEvent("request_submitted", { screen: "citizen-account", serviceId: order.serviceId, serviceName: order.serviceName, orderId: order.id });
     setView("account"); setOrderFormOpen(false); setSelected(null); setSelectedServiceIds([]); setCustomSelections([]); setCatalogueQuery(""); setPromoCode("");
