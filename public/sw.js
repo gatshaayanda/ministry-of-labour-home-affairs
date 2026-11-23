@@ -20,9 +20,9 @@ try {
       // Notification payloads are displayed automatically by Firebase. Only render
       // data-only pushes here to avoid showing the same notification twice.
       if (payload.notification) return;
-      const title = payload.data?.title || "Iteration 13 update";
+      const title = payload.data?.title || "Ministry service update";
       const options = {
-        body: payload.data?.body || "Open the app to check your latest information.",
+        body: payload.data?.body || "Open your Citizen Account to review the latest available update.",
         icon: "/iteration13-icon.svg",
         badge: "/iteration13-icon.svg",
         data: { link: payload.data?.link || "/account" },
