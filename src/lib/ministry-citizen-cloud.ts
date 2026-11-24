@@ -61,6 +61,7 @@ export async function saveMinistryCitizenRequest(input: MinistryRequestInput): P
   if (existingRequest.exists() && existingRequestData?.citizenId === user.uid) return { uid: user.uid };
 
   const request: MinistryCloudRequest = {
+    id: input.id,
     citizenId: user.uid,
     serviceId: input.serviceId.slice(0, 120),
     serviceName: input.serviceName.slice(0, 160),
@@ -127,6 +128,6 @@ function removeFromOutbox(id: string): void {
 export async function loadMyMinistryRequests(): Promise<Array<MinistryCloudRequest & { id: string }>> {
   const user = await ensureCitizen();
   const snapshot = await getDocs(query(collection(db, "serviceRequests"), where("citizenId", "==", user.uid)));
-  return snapshot.docs.map(item => ({ id: item.id, ...(item.data() as MinistryCloudRequest) }))
+  return snapshot.docs.map(item => ({ ...(item.data() as MinistryCloudRequest), id: item.id }))
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
