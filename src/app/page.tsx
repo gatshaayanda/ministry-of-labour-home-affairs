@@ -31,7 +31,7 @@ function readSharedExampleFromUrl(): SharedExample | null {
   if (typeof window === "undefined") return null;
   const params = new URLSearchParams(window.location.search);
   const token = params.get("example");
-  if (!token && params.get("ministry") === "1") return MINISTRY_PRESET as SharedExample;
+  if (!token && params.get("ministry") !== "0") return MINISTRY_PRESET as SharedExample;
   if (!token) return null;
   if (sharedExampleCache?.token === token) return sharedExampleCache.value;
   try {
@@ -432,7 +432,7 @@ export default function Home() {
 
   useEffect(() => {
     try {
-      const isMinistryWorkspace = new URLSearchParams(window.location.search).get("ministry") === "1";
+      const isMinistryWorkspace = new URLSearchParams(window.location.search).get("ministry") !== "0";
       const savedName = window.localStorage.getItem(getStorageKey("iteration13:business-name:v1"));
       if (!isMinistryWorkspace && savedName) setBusinessName(savedName.slice(0, 48));
       if (isMinistryWorkspace) setBusinessName(MINISTRY_PRESET.businessName);
@@ -448,7 +448,7 @@ export default function Home() {
 
   useEffect(() => {
     try {
-      if (new URLSearchParams(window.location.search).get("ministry") === "1") {
+      if (new URLSearchParams(window.location.search).get("ministry") !== "0") {
         setSetupPathChosen(true);
         setSetupDraftReady(true);
         return;
@@ -991,7 +991,7 @@ export default function Home() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!sharedExample || !isSharedExampleWorkspace || identityComplete || sampleLaunchHandled.current) return;
-    if (new URLSearchParams(window.location.search).get("sample") !== "1") return;
+    if (new URLSearchParams(window.location.search).get("sample") !== "1" && sharedExample.id !== "ministry-labour-home-affairs-bw") return;
     sampleLaunchHandled.current = true;
     let alreadyVisited = false;
     try { alreadyVisited = window.localStorage.getItem("iteration13:shared-example-visited:" + sharedExample.id) === "yes"; }
