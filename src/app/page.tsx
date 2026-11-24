@@ -488,7 +488,7 @@ export default function Home() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const isMinistryWorkspace = params.get("ministry") === "1";
+    const isMinistryWorkspace = params.get("ministry") !== "0";
     if (isMinistryWorkspace) {
       setBusinessName(MINISTRY_PRESET.businessName);
       setBusinessCurrency("BWP");
