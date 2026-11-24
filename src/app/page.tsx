@@ -159,13 +159,13 @@ const accentText = (hex: string) => {
   while (luminance(rgb) > 0.179) rgb = rgb.map(value => Math.max(0, Math.round(value * 0.88)));
   return "#" + rgb.map(value => value.toString(16).padStart(2, "0")).join("");
 };
-function StoreAnnouncementSlot({ active, message, image, preview = false }: { active: boolean; message: string; image?: string; preview?: boolean }) {
+function StoreAnnouncementSlot({ active, message, image, preview = false, label = "BUSINESS UPDATE" }: { active: boolean; message: string; image?: string; preview?: boolean; label?: string }) {
   const imageSource = useOfflineMediaSource(image || "");
   if (!active) return <h2 className="sd-store-availability-heading">Available offerings</h2>;
   return <aside className={"sd-store-announcement" + (preview ? " is-preview" : "")} aria-label="Business announcement">
     <span className="sd-store-announcement-mark" aria-hidden="true">📣</span>
     <div className="sd-store-announcement-copy">
-      <span className="sd-store-announcement-label">BUSINESS UPDATE</span>
+      <span className="sd-store-announcement-label">{label}</span>
       {message.trim() && <p>{message.trim()}</p>}
     </div>
     {image && <img className="sd-announcement-thumb" src={imageSource} alt={message.trim() || "Business announcement"} loading="lazy" onError={event => { event.currentTarget.hidden = true; }} />}
@@ -382,6 +382,8 @@ export default function Home() {
   }, [selectedServiceIds, selectionReady]);
   const [customSelections, setCustomSelections] = useState<Service[]>([]);
   const [catalogueQuery, setCatalogueQuery] = useState("");
+  const [ministrySearch, setMinistrySearch] = useState("");
+  const [ministryCategory, setMinistryCategory] = useState("All services");
   const [dueDate, setDueDate] = useState("");
   const [brief, setBrief] = useState("");
   const [promoCode, setPromoCode] = useState("");
@@ -725,6 +727,15 @@ export default function Home() {
   }
 
   const activeServices = data.services.filter(service => service.active);
+  const isMinistryExperience = sharedExample?.id === "ministry-labour-home-affairs-bw";
+  const ministryCategories = Array.from(new Set(activeServices.map(service => service.industry || "Other services")));
+  const ministryVisibleServices = activeServices.filter(service => {
+    const matchesCategory = ministryCategory === "All services" || (service.industry || "Other services") === ministryCategory;
+    const query = ministrySearch.trim().toLocaleLowerCase();
+    const matchesSearch = !query || `${service.name} ${service.industry || ""} ${service.description}`.toLocaleLowerCase().includes(query);
+    return matchesCategory && matchesSearch;
+  });
+  const catalogueServices = isMinistryExperience ? ministryVisibleServices : activeServices;
   const announcementIsActive = data.announcementActive ?? Boolean(data.announcement.trim() || data.announcementImage);
   const currentHour = new Date().getHours();
   const ownerGreeting = currentHour < 12 ? "Good morning" : currentHour < 17 ? "Good afternoon" : "Good evening";
@@ -1415,13 +1426,15 @@ return <main className="serviceDemo" style={{ "--studio-accent": themeColor, "--
 
 
     {view === "shop" && <>
+      {isMinistryExperience && <section className="sd-ministry-hero"><div className="sd-wrap sd-ministry-hero-inner"><div className="sd-ministry-hero-copy"><span className="sd-kicker">BOTSWANA · MINISTRY PUBLIC SERVICES</span><h1>Government services, <em>made easier.</em></h1><p>Find the right service, understand what you may need, and send an enquiry for guidance from the Ministry service team.</p><div className="sd-ministry-hero-actions"><button type="button" className="sd-ministry-primary" onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}>Explore services <span aria-hidden="true">↓</span></button><button type="button" className="sd-ministry-secondary" onClick={() => { setView("account"); setNotice(""); }}>Open citizen account <span aria-hidden="true">↗</span></button></div><div className="sd-ministry-hero-note"><span aria-hidden="true">✓</span> Clear guidance · Citizen enquiries · Service updates</div></div><div className="sd-ministry-hero-panel"><span className="sd-ministry-panel-mark" aria-hidden="true">MI</span><span className="sd-kicker">MINISTRY OF LABOUR & HOME AFFAIRS</span><strong>One place to find your next step.</strong><p>Browse public information across civil registration, immigration, employment and labour services.</p><div className="sd-ministry-panel-footer"><span>PUBLIC SERVICE DIRECTORY</span><span>BW / 01</span></div></div></div></section>}
       <section className="sd-services sd-wrap sd-digital-store sd-store-collection" id="services">
         <div className="sd-storefront-bar">
-          <div className="sd-storefront-title"><div><span className="sd-kicker">{sharedExample?.id === "ministry-labour-home-affairs-bw" ? "PUBLIC MINISTRY SERVICES" : "THE STORE"}</span><StoreAnnouncementSlot active={announcementIsActive && Boolean(data.announcement.trim() || data.announcementImage)} message={data.announcement} image={data.announcementImage} /></div></div>
+          <div className="sd-storefront-title"><div><span className="sd-kicker">{sharedExample?.id === "ministry-labour-home-affairs-bw" ? "PUBLIC MINISTRY SERVICES" : "THE STORE"}</span><StoreAnnouncementSlot active={announcementIsActive && Boolean(data.announcement.trim() || data.announcementImage)} message={data.announcement} image={data.announcementImage} label={isMinistryExperience ? "MINISTRY NOTICE" : "BUSINESS UPDATE"} /></div></div>
           <div className="sd-storefront-signals"><span className={"sd-store-availability is-"+(data.availability || "available")}><i aria-hidden="true"/>{data.availability === "limited" ? "Limited availability" : data.availability === "unavailable" ? "Currently unavailable" : "Available now"}</span></div>
         </div>
-        <div className={"sd-service-grid sd-store-grid "+(activeServices.length === 1 ? "has-featured-item" : activeServices.length > 4 ? "has-catalogue" : "has-small-catalogue")}>
-          {activeServices.length ? activeServices.map((service,index)=><article className="sd-service-card sd-store-card" key={service.id}>
+        {isMinistryExperience && <div className="sd-ministry-directory-tools"><div className="sd-ministry-directory-heading"><div><span className="sd-kicker">SERVICE DIRECTORY</span><h2>What can we help you with?</h2><p>Choose a service area or search by the service you need.</p></div><span className="sd-ministry-service-count">{activeServices.length} services</span></div><label className="sd-ministry-search"><span aria-hidden="true">⌕</span><input type="search" value={ministrySearch} onChange={event => setMinistrySearch(event.target.value)} placeholder="Search Omang, passport, work permit…" aria-label="Search Ministry services" /></label><div className="sd-ministry-category-list" aria-label="Filter services by category"><button type="button" className={ministryCategory === "All services" ? "is-active" : ""} aria-pressed={ministryCategory === "All services"} onClick={() => setMinistryCategory("All services")}>All services</button>{ministryCategories.map(category => <button type="button" key={category} className={ministryCategory === category ? "is-active" : ""} aria-pressed={ministryCategory === category} onClick={() => setMinistryCategory(category)}>{category}</button>)}</div></div>}
+        <div className={"sd-service-grid sd-store-grid "+(catalogueServices.length === 1 ? "has-featured-item" : catalogueServices.length > 4 ? "has-catalogue" : "has-small-catalogue")+(isMinistryExperience ? " is-ministry-directory" : "")}>
+          {catalogueServices.length ? catalogueServices.map((service,index)=><article className="sd-service-card sd-store-card" key={service.id}>
             <div className={"sd-service-media sd-media-"+(index%4)+(service.mediaType==="video"?" is-video":"")}>
               
               <div className="sd-media-placeholder" hidden={Boolean(service.media)} aria-hidden="true"><span>{businessName || "THE STORE"}</span><strong>{service.name}</strong><i/></div>
@@ -1431,6 +1444,7 @@ return <main className="serviceDemo" style={{ "--studio-accent": themeColor, "--
             <div className="sd-service-info">{service.industry && <div className="sd-service-meta"><span>{service.industry}</span></div>}<div className="sd-service-title"><h3>{service.name}</h3><strong>{money(service.price)}</strong></div><p>{service.description}</p><button className="sd-order-button" onClick={()=>beginOrder(service)}>{sharedExample?.id === "ministry-labour-home-affairs-bw" ? "Request guidance" : "Select service"} <span aria-hidden="true">↗</span></button></div>
           </article>) : <div className="sd-store-empty"><span aria-hidden="true">🛍️</span><strong>Something is being prepared.</strong><p>Products and services will appear here when the business publishes its catalogue.</p></div>}
         </div>
+        {isMinistryExperience && catalogueServices.length === 0 && <div className="sd-ministry-no-results"><strong>No matching services found.</strong><p>Try another search term or choose All services.</p><button type="button" onClick={() => { setMinistrySearch(""); setMinistryCategory("All services"); }}>Clear search</button></div>}
       </section>
 
     </>}
