@@ -243,3 +243,71 @@ html,body{background:#f4f6fa;color:var(--ministry-ink)}body{font-family:Inter,"S
  .serviceDemo .sd-panel-head{align-items:flex-start}
 }
 @media(prefers-reduced-motion:reduce){.serviceDemo *{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+
+/* Public Ministry discovery — a civic service journey, not a retail catalogue. */
+.serviceDemo .sd-ministry-hero{position:relative;overflow:hidden;background:linear-gradient(118deg,#17263d 0%,#203a60 62%,#244d86 100%);color:#fff;padding:clamp(34px,5.2vw,68px) 0}
+.serviceDemo .sd-ministry-hero:after{content:"";position:absolute;right:-110px;top:-220px;width:560px;height:560px;border:1px solid #ffffff20;border-radius:50%;box-shadow:0 0 0 48px #ffffff08,0 0 0 96px #ffffff06;pointer-events:none}
+.serviceDemo .sd-ministry-hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.72fr);align-items:center;gap:clamp(26px,6vw,84px)}
+.serviceDemo .sd-ministry-hero-copy{max-width:690px}
+.serviceDemo .sd-ministry-hero .sd-kicker{color:#a9c5ff}
+.serviceDemo .sd-ministry-hero h1{max-width:13ch;margin:14px 0 18px;font:700 clamp(2.55rem,5.3vw,4.7rem)/1.02 Georgia,"Times New Roman",serif;letter-spacing:-.045em;color:#fff}
+.serviceDemo .sd-ministry-hero h1 em{color:#a9c5ff;font-style:normal}
+.serviceDemo .sd-ministry-hero-copy>p{max-width:58ch;margin:0;color:#e0e8f5;font-size:15px;line-height:1.75}
+.serviceDemo .sd-ministry-hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:25px}
+.serviceDemo .sd-ministry-primary,.serviceDemo .sd-ministry-secondary{min-height:45px;padding:0 16px;border:1px solid transparent;border-radius:9px;font-size:13px;font-weight:800}
+.serviceDemo .sd-ministry-primary{background:#fff;color:#1c3558}
+.serviceDemo .sd-ministry-primary:hover{background:#eaf1ff}
+.serviceDemo .sd-ministry-secondary{background:#ffffff12;border-color:#ffffff55;color:#fff}
+.serviceDemo .sd-ministry-secondary:hover{background:#ffffff20}
+.serviceDemo .sd-ministry-hero-note{display:flex;align-items:center;gap:8px;margin-top:23px;color:#d0dced;font-size:11px;font-weight:700;letter-spacing:.015em}
+.serviceDemo .sd-ministry-hero-note span{display:grid;place-items:center;width:19px;height:19px;border-radius:50%;background:#ffffff20;color:#fff}
+.serviceDemo .sd-ministry-hero-panel{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:245px;padding:23px;border:1px solid #ffffff30;border-radius:15px;background:linear-gradient(145deg,#ffffff18,#ffffff08);box-shadow:0 18px 45px #07142635;backdrop-filter:blur(8px)}
+.serviceDemo .sd-ministry-panel-mark{display:grid;place-items:center;width:42px;height:42px;margin-bottom:23px;border-radius:11px;background:#fff;color:#203b62;font-size:13px;font-weight:950;letter-spacing:-.04em}
+.serviceDemo .sd-ministry-hero-panel .sd-kicker{font-size:9px;color:#bcd0f1}
+.serviceDemo .sd-ministry-hero-panel>strong{max-width:16ch;margin-top:10px;font:700 25px/1.15 Georgia,"Times New Roman",serif;color:#fff}
+.serviceDemo .sd-ministry-hero-panel>p{max-width:36ch;margin:10px 0 25px;color:#dce6f4;font-size:12px;line-height:1.65}
+.serviceDemo .sd-ministry-panel-footer{display:flex;justify-content:space-between;gap:15px;width:100%;margin-top:auto;padding-top:13px;border-top:1px solid #ffffff2b;color:#c1d0e6;font-size:9px;font-weight:800;letter-spacing:.12em}
+.serviceDemo .sd-ministry-directory-tools{padding:9px 0 21px}
+.serviceDemo .sd-ministry-directory-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:15px;margin-bottom:17px}
+.serviceDemo .sd-ministry-directory-heading h2{margin:7px 0 5px;font:700 clamp(1.8rem,3.2vw,2.65rem)/1.1 Georgia,"Times New Roman",serif;letter-spacing:-.035em;color:var(--ministry-ink)}
+.serviceDemo .sd-ministry-directory-heading p{margin:0;color:var(--ministry-muted);font-size:13px;line-height:1.55}
+.serviceDemo .sd-ministry-service-count{flex:0 0 auto;padding:7px 10px;border:1px solid var(--ministry-line);border-radius:999px;background:#fff;color:#52627a;font-size:11px;font-weight:800}
+.serviceDemo .sd-ministry-search{display:flex;align-items:center;gap:10px;max-width:640px;min-height:49px;padding:0 14px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;box-shadow:0 4px 14px #202b3c08}
+.serviceDemo .sd-ministry-search>span{color:#60718a;font-size:23px;line-height:1}
+.serviceDemo .sd-ministry-search input{width:100%;min-width:0;min-height:45px;border:0;outline:0;background:transparent;color:var(--ministry-ink);font-size:14px}
+.serviceDemo .sd-ministry-search input::placeholder{color:#8491a4}
+.serviceDemo .sd-ministry-category-list{display:flex;gap:8px;overflow-x:auto;padding:15px 0 4px;scrollbar-width:thin}
+.serviceDemo .sd-ministry-category-list button{flex:0 0 auto;min-height:36px;padding:0 12px;border:1px solid #d6deea;border-radius:999px;background:#fff;color:#42536c;font-size:11px;font-weight:750;white-space:nowrap}
+.serviceDemo .sd-ministry-category-list button:hover{border-color:#9db6e8;color:#1d4c9b}
+.serviceDemo .sd-ministry-category-list button.is-active{border-color:#203b62;background:#203b62;color:#fff}
+.serviceDemo .sd-ministry-boundary-note{margin:11px 0 0;padding:10px 12px;border-left:3px solid var(--ministry-blue);border-radius:0 8px 8px 0;background:#edf2fb;color:#4b5c75;font-size:11px;line-height:1.55}
+.serviceDemo .sd-service-grid.is-ministry-directory{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.serviceDemo .sd-service-grid.is-ministry-directory .sd-service-card{position:relative;min-height:0;border-radius:12px;box-shadow:0 4px 15px #202b3c08}
+.serviceDemo .sd-service-grid.is-ministry-directory .sd-service-card:before{content:"";height:3px;background:#2458e8;position:absolute;left:0;right:0;top:0;z-index:1;opacity:.85}
+.serviceDemo .sd-service-grid.is-ministry-directory .sd-service-media{display:none}
+.serviceDemo .sd-service-grid.is-ministry-directory .sd-service-info{gap:10px;padding:17px}
+.serviceDemo .sd-service-grid.is-ministry-directory .sd-service-meta span{display:inline-flex;padding:5px 8px;border-radius:5px;background:#eff3fa;color:#50627d;font-size:9px;font-weight:800;letter-spacing:.025em}
+.serviceDemo .sd-service-grid.is-ministry-directory .sd-service-title{display:block}
+.serviceDemo .sd-service-grid.is-ministry-directory .sd-service-title h3{max-width:none;margin:0;font-size:16px;line-height:1.3}
+.serviceDemo .sd-service-grid.is-ministry-directory .sd-service-info>p{margin:0;color:#5b687b;font-size:12px;line-height:1.6}
+.serviceDemo .sd-service-grid.is-ministry-directory .sd-order-button{min-height:38px;margin-top:auto;background:#f1f5fc;border-color:#d9e2f0;color:#24416f;font-size:11px}
+.serviceDemo .sd-service-grid.is-ministry-directory .sd-order-button:hover{background:#e7efff;border-color:#2458e8}
+.serviceDemo .sd-ministry-no-results{padding:35px 20px;border:1px dashed #bdc9da;border-radius:13px;background:#fff;text-align:center}
+.serviceDemo .sd-ministry-no-results strong{font:700 20px Georgia,"Times New Roman",serif;color:var(--ministry-ink)}
+.serviceDemo .sd-ministry-no-results p{color:var(--ministry-muted);font-size:13px}
+.serviceDemo .sd-ministry-no-results button{padding:9px 13px;border:1px solid #cbd5e1;border-radius:8px;background:#f4f7fc;color:#243e68;font-size:12px;font-weight:800}
+.serviceDemo .sd-storefront-bar{margin-bottom:19px}
+@media(max-width:900px){.serviceDemo .sd-ministry-hero-inner{grid-template-columns:minmax(0,1fr) minmax(230px,.72fr);gap:24px}.serviceDemo .sd-service-grid.is-ministry-directory{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){
+ .serviceDemo .sd-ministry-hero{padding:35px 0 38px}
+ .serviceDemo .sd-ministry-hero-inner{grid-template-columns:1fr;gap:23px}
+ .serviceDemo .sd-ministry-hero h1{font-size:clamp(2.5rem,11vw,3.55rem)}
+ .serviceDemo .sd-ministry-hero-panel{min-height:0;padding:17px}
+ .serviceDemo .sd-ministry-panel-mark{margin-bottom:15px}
+ .serviceDemo .sd-ministry-directory-heading{align-items:flex-start;flex-direction:column;gap:9px}
+ .serviceDemo .sd-ministry-service-count{align-self:flex-start}
+ .serviceDemo .sd-ministry-search{max-width:none}
+ .serviceDemo .sd-service-grid.is-ministry-directory{grid-template-columns:1fr;gap:10px}
+ .serviceDemo .sd-service-grid.is-ministry-directory .sd-service-info{padding:15px}
+}
